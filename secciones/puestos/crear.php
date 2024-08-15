@@ -1,3 +1,16 @@
+<?php require_once('../../bd.php') ;
+if($_POST){
+    // print_r($_POST);
+    // Recolectar los datos del metodo POST
+    $nombredelpuesto = (isset($_POST['nombredelpuesto'])) ? $_POST['nombredelpuesto'] : "";
+    // Preparar la inserción de los datos
+    $sentencia = $conexion->prepare("INSERT INTO tbl_puestos(`nombredelpuesto`) VALUES (:nombredelpuesto)");
+    // Asignar valores que vienen del formulario
+    $sentencia->bindParam(":nombredelpuesto", $nombredelpuesto);
+    // Ejecutar la sentencia
+    $sentencia->execute();
+}
+?>
 <?php require_once('../../templates/header.php') ;?>
 <div class="card">
     <div class="card-header">Datos del puesto</div>
