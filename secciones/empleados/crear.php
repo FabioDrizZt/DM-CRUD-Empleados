@@ -36,7 +36,7 @@
                 <input type="date" class="form-control" name="fechadeingreso" id="fechadeingreso"
                     aria-describedby="helpId" />
             </div>
-            <a name="" id="" class="btn btn-outline-danger" href="#" role="button">Cancelar</a>
+            <a name="" id="" class="btn btn-outline-danger" href="index.php" role="button">Cancelar</a>
 
             <button type="submit" class="btn btn-primary">
                 Enviar
