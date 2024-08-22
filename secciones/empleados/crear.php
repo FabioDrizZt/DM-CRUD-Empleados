@@ -1,3 +1,50 @@
+<?php require_once('../../bd.php') ;
+if($_POST){
+/*  print_r($_POST);
+    print_r($_FILES); */
+    print_r($_FILES['foto']);    // Recolectar los datos del metodo POST
+    $nombre = (isset($_POST['nombre'])) ? $_POST['nombre'] : "";
+    $apellido = (isset($_POST['apellido'])) ? $_POST['apellido'] : "";
+    $idpuesto = (isset($_POST['puesto'])) ? $_POST['puesto'] : "";
+    $fechadeingreso = (isset($_POST['fechadeingreso'])) ? $_POST['fechadeingreso'] : "";
+    // Recolectar datos de tipo file (archivo)
+    $foto = (isset($_FILES['foto'])) ? $_FILES['foto']['name'] : "";
+    $cv = (isset($_FILES['cv'])) ? $_FILES['cv']['name'] : "";
+    // Preparar la inserción de los datos
+    $sentencia = $conexion->prepare("
+        INSERT INTO `tbl_empleados`( `nombre`, `apellido`, `foto`, `cv`, `idpuesto`, `fechadeingreso`) 
+        VALUES (:nombre, :apellido, :foto, :cv, :idpuesto, :fechadeingreso)");
+    // Asignar valores que vienen del formulario
+    $sentencia->bindParam(":nombre", $nombre);
+    $sentencia->bindParam(":apellido", $apellido);
+    $sentencia->bindParam(":idpuesto", $idpuesto);
+    $sentencia->bindParam(":fechadeingreso", $fechadeingreso);
+    // Tratamiento especial para los archivos
+    $fecha = new DateTime();
+    $foto = $fecha->getTimestamp()."_".$foto;
+    $sentencia->bindParam(":foto", $foto);
+    $cv = $fecha->getTimestamp()."_".$cv;
+    $sentencia->bindParam(":cv", $cv);
+    // Ejecutar la sentencia
+    $sentencia->execute();
+    // Crear los archivos en nuestro servidor
+    if(isset($_FILES['foto'])){
+        move_uploaded_file($_FILES['foto']['tmp_name'],'./images/'.$foto);
+    }
+    if(isset($_FILES['cv'])){
+        move_uploaded_file($_FILES['cv']['tmp_name'],'./pdfs/'.$cv);
+    }
+    // Redirigir al index, una vez creado el nuevo puesto
+    header("Location: index.php");
+}    
+$sentencia = $conexion->prepare("SELECT * FROM `tbl_puestos` ORDER BY nombredelpuesto ");
+$sentencia->execute();
+$lista_tbl_puestos = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+/* echo "<pre>";
+print_r($lista_tbl_puestos); */
+
+?>
+
 <?php require_once('../../templates/header.php') ;?>
 <div class="card">
     <div class="card-header">Datos del empleado</div>
@@ -26,9 +73,9 @@
                 <label for="puesto" class="form-label">Puesto</label>
                 <select class="form-select form-select-lg" name="puesto" id="puesto">
                     <option hidden selected>Selecciona uno</option>
-                    <option value="1">Desarrollador FrontEnd</option>
-                    <option value="2">Desarrollador BackEnd</option>
-                    <option value="3">Desarrollador FullStack</option>
+                    <?php foreach ($lista_tbl_puestos as $registro) : ?>
+                    <option value="<?= $registro['id'] ?>"><?= $registro['nombredelpuesto'] ?></option>
+                    <?php endforeach ?>
                 </select>
             </div>
             <div class="mb-3">
