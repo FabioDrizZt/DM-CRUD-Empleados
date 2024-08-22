@@ -1,4 +1,27 @@
-<?php require_once('../../templates/header.php') ;?>
+<?php require_once('../../bd.php') ;
+
+/* Lógica para la eliminación */
+if(isset($_GET['txtID'])){
+    // Recolectar los datos del metodo GET
+    $id = $_GET['txtID'];
+    // Preparar la eliminación de los datos
+    $sentencia = $conexion->prepare("DELETE FROM `tbl_empleados` WHERE `id`=:id");
+    // Asignar valores que vienen del formulario
+    $sentencia->bindParam(":id", $id);
+    // Ejecutar la sentencia
+    $sentencia->execute();
+}
+
+$sentencia = $conexion->prepare("SELECT *, (
+    SELECT nombredelpuesto
+    FROM tbl_puestos
+    WHERE tbl_puestos.id = tbl_empleados.idpuesto
+) as puesto FROM `tbl_empleados` ORDER BY id DESC ");
+$sentencia->execute();
+$lista_tbl_empleados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+/* echo "<pre>";
+print_r($lista_tbl_empleados); */
+?><?php require_once('../../templates/header.php') ;?>
 
 <div class="card">
     <div class="card-header">
@@ -10,6 +33,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th scope="col">ID</th>
                         <th scope="col">Nombre y Apellido</th>
                         <th scope="col">Foto</th>
                         <th scope="col">CV</th>
@@ -19,19 +43,23 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <?php foreach ($lista_tbl_empleados as $registro) : ?>
                     <tr class="">
-                        <td scope="row">Fabio, Argañaraz</td>
-                        <td>fabio.jpg</td>
-                        <td>fabio.pdf</td>
-                        <td>Instructor</td>
-                        <td>12/12/2020</td>
+                        <td scope="row"><?= $registro['id'] ?></td>
+                        <td><?= $registro['nombre'] .  ', ' . $registro['apellido'] ?></td>
+                        <td><?= $registro['foto'] ?></td>
+                        <td><?= $registro['cv'] ?></td>
+                        <td><?= $registro['puesto'] ?></td>
+                        <td><?= $registro['fechadeingreso'] ?></td>
                         <td>
                             <a name="" id="" class="btn btn-outline-success" href="carta.php" role="button">Carta📨</a>
-                            <a name="" id="" class="btn btn-outline-info" href="editar.php" role="button">Editar🖊</a>
-                            <a name="" id="" class="btn btn-outline-danger" href="#" role="button">Eliminar❌</a>
+                            <a name="" id="" class="btn btn-outline-info" href="editar.php?txtID=<?= $registro['id'] ?>"
+                                role="button">Editar🖊</a>
+                            <a name="" id="" class="btn btn-outline-danger"
+                                href="index.php?txtID=<?= $registro['id'] ?>" role="button">Eliminar❌</a>
                         </td>
                     </tr>
-
+                    <?php endforeach ?>
                 </tbody>
             </table>
         </div>
