@@ -40,7 +40,8 @@ print_r($lista_tbl_puestos); */
                         <td scope="row"> <?= $registro['id'] ?> </td>
                         <td><?= $registro['nombredelpuesto'] ?></td>
                         <td>
-                            <a name="" id="" class="btn btn-outline-info" href="editar.php" role="button">Editar🖊</a>
+                            <a name="" id="" class="btn btn-outline-info" href="editar.php?txtID=<?= $registro['id'] ?>"
+                                role="button">Editar🖊</a>
                             <a name="" id="" class="btn btn-outline-danger"
                                 href="index.php?txtID=<?= $registro['id'] ?>" role="button">Eliminar❌</a>
                         </td>
