@@ -1,4 +1,19 @@
 <?php require_once('../../bd.php') ;
+
+/* Lógica para la eliminación */
+if(isset($_GET['txtID'])){
+    // Recolectar los datos del metodo GET
+    $id = $_GET['txtID'];
+    // Preparar la eliminación de los datos
+    $sentencia = $conexion->prepare("DELETE FROM `tbl_puestos` WHERE `id`=:id");
+    // Asignar valores que vienen del formulario
+    $sentencia->bindParam(":id", $id);
+    // Ejecutar la sentencia
+    $sentencia->execute();
+    // Redirigir al index, una vez creado el nuevo puesto
+    // header("Location: index.php");
+}
+
 $sentencia = $conexion->prepare("SELECT * FROM `tbl_puestos` ORDER BY id DESC ");
 $sentencia->execute();
 $lista_tbl_puestos = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -28,7 +43,8 @@ print_r($lista_tbl_puestos); */
                         <td><?= $registro['nombredelpuesto'] ?></td>
                         <td>
                             <a name="" id="" class="btn btn-outline-info" href="editar.php" role="button">Editar🖊</a>
-                            <a name="" id="" class="btn btn-outline-danger" href="#" role="button">Eliminar❌</a>
+                            <a name="" id="" class="btn btn-outline-danger"
+                                href="index.php?txtID=<?= $registro['id'] ?>" role="button">Eliminar❌</a>
                         </td>
                     </tr>
                     <?php endforeach ?>
