@@ -10,8 +10,6 @@ if(isset($_GET['txtID'])){
     $sentencia->bindParam(":id", $id);
     // Ejecutar la sentencia
     $sentencia->execute();
-    // Redirigir al index, una vez creado el nuevo puesto
-    // header("Location: index.php");
 }
 
 $sentencia = $conexion->prepare("SELECT * FROM `tbl_puestos` ORDER BY id DESC ");
