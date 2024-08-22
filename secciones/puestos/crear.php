@@ -9,6 +9,8 @@ if($_POST){
     $sentencia->bindParam(":nombredelpuesto", $nombredelpuesto);
     // Ejecutar la sentencia
     $sentencia->execute();
+    // Redirigir al index, una vez creado el nuevo puesto
+    header("Location: index.php");
 }
 ?>
 <?php require_once('../../templates/header.php') ;?>

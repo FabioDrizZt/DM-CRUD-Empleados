@@ -1,5 +1,5 @@
 <?php require_once('../../bd.php') ;
-$sentencia = $conexion->prepare("SELECT * FROM `tbl_puestos` ORDER BY nombredelpuesto");
+$sentencia = $conexion->prepare("SELECT * FROM `tbl_puestos` ORDER BY id DESC ");
 $sentencia->execute();
 $lista_tbl_puestos = $sentencia->fetchAll(PDO::FETCH_ASSOC);
 /* echo "<pre>";
