@@ -1,3 +1,23 @@
+<?php require_once('../../bd.php') ;
+
+/* Lógica para la eliminación */
+if(isset($_GET['txtID'])){
+    // Recolectar los datos del metodo GET
+    $id = $_GET['txtID'];
+    // Preparar la eliminación de los datos
+    $sentencia = $conexion->prepare("DELETE FROM `tbl_usuarios` WHERE `id`=:id");
+    // Asignar valores que vienen del formulario
+    $sentencia->bindParam(":id", $id);
+    // Ejecutar la sentencia
+    $sentencia->execute();
+}
+
+$sentencia = $conexion->prepare("SELECT * FROM `tbl_usuarios` ORDER BY id DESC ");
+$sentencia->execute();
+$lista_tbl_usuarios = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+/* echo "<pre>";
+print_r($lista_tbl_usuarios); */
+?>
 <?php require_once('../../templates/header.php') ;?>
 <div class="card">
     <div class="card-header">
@@ -17,17 +37,20 @@
                     </tr>
                 </thead>
                 <tbody>
-
+                    <?php foreach ($lista_tbl_usuarios as $registro) : ?>
                     <tr class="">
-                        <td scope="row">1</td>
-                        <td>juanPerez</td>
+                        <td scope="row"><?= $registro['id'] ?></td>
+                        <td><?= $registro['usuario'] ?></td>
                         <td>*******</td>
-                        <td>juan.perez@gmail.com</td>
+                        <td><?= $registro['correo'] ?></td>
                         <td>
-                            <a name="" id="" class="btn btn-outline-info" href="editar.php" role="button">Editar🖊</a>
-                            <a name="" id="" class="btn btn-outline-danger" href="#" role="button">Eliminar❌</a>
+                            <a name="" id="" class="btn btn-outline-info" href="editar.php?txtID=<?= $registro['id'] ?>"
+                                role="button">Editar🖊</a>
+                            <a name="" id="" class="btn btn-outline-danger"
+                                href="index.php?txtID=<?= $registro['id'] ?>" role="button">Eliminar❌</a>
                         </td>
                     </tr>
+                    <?php endforeach ?>
                 </tbody>
             </table>
         </div>
