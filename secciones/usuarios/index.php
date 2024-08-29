@@ -26,7 +26,7 @@ print_r($lista_tbl_usuarios); */
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table ">
+            <table id="tabla_id" class="table ">
                 <thead>
                     <tr>
                         <th scope="col">ID</th>

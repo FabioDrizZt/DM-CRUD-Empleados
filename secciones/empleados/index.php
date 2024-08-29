@@ -45,7 +45,7 @@ print_r($lista_tbl_empleados); */
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table">
+            <table id="tabla_id" class="table">
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
@@ -74,7 +74,8 @@ print_r($lista_tbl_empleados); */
                         <td><?= $registro['puesto'] ?></td>
                         <td><?= $registro['fechadeingreso'] ?></td>
                         <td>
-                            <a name="" id="" class="btn btn-outline-success" href="carta.php" role="button">Carta📨</a>
+                            <a name="" id="" class="btn btn-outline-success"
+                                href="carta.php?txtID=<?= $registro['id'] ?>" role="button">Carta📨</a>
                             <a name="" id="" class="btn btn-outline-info" href="editar.php?txtID=<?= $registro['id'] ?>"
                                 role="button">Editar🖊</a>
                             <a name="" id="" class="btn btn-outline-danger"
