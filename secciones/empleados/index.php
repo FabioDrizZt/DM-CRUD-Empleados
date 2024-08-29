@@ -47,8 +47,15 @@ print_r($lista_tbl_empleados); */
                     <tr class="">
                         <td scope="row"><?= $registro['id'] ?></td>
                         <td><?= $registro['nombre'] .  ', ' . $registro['apellido'] ?></td>
-                        <td><?= $registro['foto'] ?></td>
-                        <td><?= $registro['cv'] ?></td>
+                        <td>
+                            <img src="./images/<?= $registro['foto'] ?>" width="100" class="img-fluid rounded-top"
+                                alt="imagen de <?= $registro['nombre'] ?>" />
+                        </td>
+                        <td>
+                            <a href="./pdfs/<?= $registro['cv'] ?>" target="_blank" rel="noopener noreferrer">
+                                CV de <?= $registro['nombre'] ?>
+                            </a>
+                        </td>
                         <td><?= $registro['puesto'] ?></td>
                         <td><?= $registro['fechadeingreso'] ?></td>
                         <td>
