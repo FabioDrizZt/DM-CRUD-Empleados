@@ -4,7 +4,22 @@
 if(isset($_GET['txtID'])){
     // Recolectar los datos del metodo GET
     $id = $_GET['txtID'];
-    // Preparar la eliminación de los datos
+    // Preparar la eliminación de los datos fisicamente
+    $sentencia = $conexion->prepare("SELECT * FROM `tbl_empleados` WHERE `id`=:id");
+    $sentencia->bindParam(":id", $id);
+    $sentencia->execute();
+    $registro = $sentencia->fetch(PDO::FETCH_LAZY);
+    $foto = $registro['foto'];
+    $cv = $registro['cv'];
+    // Preguntamos si existe la foto, entonces la borramos
+    if(file_exists("./images/$foto")){
+        unlink("./images/$foto");
+    }
+    // Preguntamos si existe el cv, entonces lo borramos
+    if(file_exists("./pdfs/$cv")){
+        unlink("./pdfs/$cv");
+    }
+    // Preparar la eliminación de los datos en la BD
     $sentencia = $conexion->prepare("DELETE FROM `tbl_empleados` WHERE `id`=:id");
     // Asignar valores que vienen del formulario
     $sentencia->bindParam(":id", $id);
